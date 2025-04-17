@@ -1,5 +1,4 @@
 import type React from "react";
-
 import { render } from "ink-testing-library";
 import stripAnsi from "strip-ansi";
 
