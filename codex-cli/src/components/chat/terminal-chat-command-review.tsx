@@ -107,7 +107,6 @@ export function TerminalChatCommandReview({
     return opts;
   }, [showAlwaysApprove]);
 
-  // Added a confirm option so if user enters a wrong command they can confirm the comand or type /back to go back to the prev menu NOTE(@3xpl0itk1t)
   useInput((input, key) => {
     if (mode === "select") {
       if (input === "y") {
@@ -129,12 +128,12 @@ export function TerminalChatCommandReview({
         setMode("confirm");
       }
     } else if (mode === "confirm") {
-      if (input === "/back") {
+      if (input === "/b") {
         setMode("select");
         setSelection(null);
       } else if (input === "y" || input === "yes") {
         if (selection !== null && selection !== "edit") {
-          onReviewCommand(selection);
+          onReviewCommand(ReviewDecision.CONFIRM);
         }
       } else if (input === "n" || input === "no") {
         if (selection === ReviewDecision.NO_CONTINUE) {
@@ -237,7 +236,7 @@ export function TerminalChatCommandReview({
                 ? "No, exit"
                 : "Unknown option"}
             </Text>
-            <Text dimColor>Type "/back" to return to the selection menu.</Text>
+            <Text dimColor>Type "/b" to return to the selection menu.</Text>
           </>
         ) : mode === "input" ? (
           <>
