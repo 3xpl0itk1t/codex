@@ -21,7 +21,6 @@ export function TerminalChatCommandReview({
   onReviewCommand: (decision: ReviewDecision, customMessage?: string) => void;
   explanation?: string;
 }): React.ReactElement {
-
   const [selection, setSelection] = React.useState<ReviewDecision | "edit" | null>(null);
   const [mode, setMode] = React.useState<"select" | "input" | "explanation" | "confirm" >(
     "select",
@@ -35,7 +34,6 @@ export function TerminalChatCommandReview({
       setMode("explanation");
     }
   }, [propExplanation]);
-
   const [msg, setMsg] = React.useState<string>("");
 
   // -------------------------------------------------------------------------
@@ -108,7 +106,6 @@ export function TerminalChatCommandReview({
 
     return opts;
   }, [showAlwaysApprove]);
-
 
   // Added a confirm option so if user enters a wrong command they can confirm the comand or type /back to go back to the prev menu NOTE(@3xpl0itk1t)
   useInput((input, key) => {
