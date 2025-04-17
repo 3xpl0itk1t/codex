@@ -39,7 +39,7 @@ interface MockKey {
 
 type InputCallback = (input: string, key: MockKey) => void;
 
-describe("TerminalChatCommandReview - Confirm Mode", () => {
+describe("TerminalChatCommandReview - Confirm testMode", () => {
   const mockOnReviewCommand = vi.fn();
   const defaultProps = {
     confirmationPrompt: <Text>Mock prompt</Text>,
@@ -51,7 +51,7 @@ describe("TerminalChatCommandReview - Confirm Mode", () => {
     mockUseInput.mockReset();
   });
 
-  it("shows confirm message when in confirm mode with YES selection", async () => {
+  it("shows confirm message when in confirm testMode with YES selection", async () => {
     // Simulate pressing 'y' to select YES
     mockUseInput.mockImplementation((callback: UseInputCallback) => {
       callback("y", { return: false });
@@ -85,7 +85,7 @@ describe("TerminalChatCommandReview - Confirm Mode", () => {
     expect(mockOnReviewCommand).toHaveBeenCalledWith(ReviewDecision.CONFIRM);
   });
 
-  it("handles back button in confirm mode", async () => {
+  it("handles back button in confirm testMode", async () => {
     let storedCallback: UseInputCallback | null = null as UseInputCallback | null;
     mockUseInput.mockImplementation((callback: UseInputCallback) => {
       storedCallback = callback;
@@ -108,7 +108,7 @@ describe("TerminalChatCommandReview - Confirm Mode", () => {
     expect(frame).toContain("Allow command?");
   });
 
-  it("handles NO_CONTINUE with custom message in confirm mode", async () => {
+  it("handles NO_CONTINUE with custom message in confirm testMode", async () => {
     let storedCallback: UseInputCallback | null = null as UseInputCallback | null;
     mockUseInput.mockImplementation((callback: UseInputCallback) => {
       storedCallback = callback;
@@ -127,7 +127,7 @@ describe("TerminalChatCommandReview - Confirm Mode", () => {
     );
   });
 
-  it("handles NO_EXIT in confirm mode", async () => {
+  it("handles NO_EXIT in confirm testMode", async () => {
     let storedCallback: UseInputCallback | null = null as UseInputCallback | null;
     mockUseInput.mockImplementation((callback: UseInputCallback) => {
       storedCallback = callback;
@@ -151,16 +151,15 @@ describe("TerminalChatCommandReview", () => {
     mockUseInput.mockClear();
   });
 
-  it("should render confirm mode correctly", () => {
+  it("should render confirm testMode correctly", () => {
     const onConfirm = vi.fn();
     const onBack = vi.fn();
 
     const { lastFrame } = renderTui(
       <TerminalChatCommandReview
-        mode="confirm"
-        onConfirm={onConfirm}
-        onBack={onBack}
-      />,
+            testMode="confirm"
+            onReviewCommand={onConfirm}
+            onBack={onBack} confirmationPrompt={undefined}      />,
     );
 
     expect(lastFrame()).toContain("YES");
@@ -173,15 +172,17 @@ describe("TerminalChatCommandReview", () => {
     const onBack = vi.fn();
 
     renderTui(
-      <TerminalChatCommandReview
-        mode="confirm"
-        onConfirm={onConfirm}
-        onBack={onBack}
-      />,
+        <TerminalChatCommandReview
+        testMode="confirm"
+        onReviewCommand={onConfirm}
+        onBack={onBack} confirmationPrompt={undefined}      />,
     );
 
     // Get the callback that was passed to useInput
-    const callback = mockUseInput.mock.calls[0][0];
+    const callback = mockUseInput.mock.calls[0]?.[0];
+    if (!callback) {
+      throw new Error("mockUseInput was not called or callback is undefined");
+    }
 
     // Simulate down arrow press
     callback("", { downArrow: true });
@@ -196,14 +197,16 @@ describe("TerminalChatCommandReview", () => {
     const onBack = vi.fn();
 
     renderTui(
-      <TerminalChatCommandReview
-        mode="confirm"
-        onConfirm={onConfirm}
-        onBack={onBack}
-      />,
+        <TerminalChatCommandReview
+        testMode="confirm"
+        onReviewCommand={onConfirm}
+        onBack={onBack} confirmationPrompt={undefined}      />,
     );
 
-    const callback = mockUseInput.mock.calls[0][0];
+    const callback = mockUseInput.mock.calls[0]?.[0];
+    if (!callback) {
+      throw new Error("mockUseInput was not called or callback is undefined");
+    }
     // Simulate escape key press
     callback("", { escape: true });
 
@@ -215,14 +218,16 @@ describe("TerminalChatCommandReview", () => {
     const onBack = vi.fn();
 
     renderTui(
-      <TerminalChatCommandReview
-        mode="confirm"
-        onConfirm={onConfirm}
-        onBack={onBack}
-      />,
+        <TerminalChatCommandReview
+        testMode="confirm"
+        onReviewCommand={onConfirm}
+        onBack={onBack} confirmationPrompt={undefined}      />,
     );
 
-    const callback = mockUseInput.mock.calls[0][0];
+    const callback = mockUseInput.mock.calls[0]?.[0];
+    if (!callback) {
+      throw new Error("mockUseInput was not called or callback is undefined");
+    }
     // Simulate down arrow press twice to reach NO_CONTINUE
     callback("", { downArrow: true });
     callback("", { downArrow: true });
@@ -238,14 +243,16 @@ describe("TerminalChatCommandReview", () => {
     const onBack = vi.fn();
 
     renderTui(
-      <TerminalChatCommandReview
-        mode="confirm"
-        onConfirm={onConfirm}
-        onBack={onBack}
-      />,
+        <TerminalChatCommandReview
+        testMode="confirm"
+        onReviewCommand={onConfirm}
+        onBack={onBack} confirmationPrompt={undefined}      />,
     );
 
-    const callback = mockUseInput.mock.calls[0][0]!; // Add non-null assertion
+    const callback = mockUseInput.mock.calls[0]?.[0];
+    if (!callback) {
+      throw new Error("mockUseInput was not called or callback is undefined");
+    }
     // Simulate down arrow press three times to reach NO_EXIT
     callback("", { downArrow: true });
     callback("", { downArrow: true });

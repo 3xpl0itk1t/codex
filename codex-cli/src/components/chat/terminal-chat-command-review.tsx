@@ -17,11 +17,13 @@ export function TerminalChatCommandReview({
   onReviewCommand,
   explanation: propExplanation,
   testMode,
+  onBack,
 }: {
   confirmationPrompt: React.ReactNode;
   onReviewCommand: (decision: ReviewDecision, customMessage?: string) => void;
   explanation?: string;
   testMode?: "select" | "confirm" | "input" | "explanation";
+  onBack?: () => void;
 }): React.ReactElement {
   const [selection, setSelection] = React.useState<ReviewDecision | "edit" | null>(null);
   const [mode, setMode] = React.useState<"select" | "input" | "explanation" | "confirm">(
