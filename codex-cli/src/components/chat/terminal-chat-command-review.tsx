@@ -223,7 +223,7 @@ export function TerminalChatCommandReview({
           </>
         ) : mode === "confirm" ? (
           <>
-            <Text>Confirm your choice (y to confirm, n to deny, /back to go back):</Text>
+            <Text>Confirm your choice (y to confirm, n to deny, /b to go back):</Text>
             <Text>
               You selected:{" "}
               {selection === ReviewDecision.YES
